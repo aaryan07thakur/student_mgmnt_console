@@ -61,6 +61,50 @@ def get_valid_phone(prompt="Enter Phone number: "):
         return phone
 # =======================================================================
 
+#Email validation function========================================
+def get_valid_email(prompt="Enter Your Email: "):
+    while True:
+        email=input(prompt).strip()
+
+        #Must contain exactly one "@"
+        if email.count("@")!=1:
+            print("Invalid email! Must contain '@'. ")
+            continue
+
+        username, domain= email.split("@")
+
+        #Username must not be empty
+        if len(username)==0:
+            print("Invalid email! Username cannot be empty.")
+            continue
+
+        #Domain must not be empty
+        if len(domain)==0:
+            print("Invalid email! Domain cannot be empty.")
+            continue
+
+        #Domain must contain at least one dot
+        if "." not in domain:
+            print("invalid email! Domain must contain at least one '.' ")
+            continue
+
+        #Domain cannot start or end with dot
+        if domain.startswith(".") or domain.endswith("."):
+            print("Invalid email! Domain cannot start or end with '.' ")
+            continue
+
+        #check TLD(Top level Domain) length 
+        tld=domain.split(".")[-1]
+        if len(tld)<2 or len(tld)>4:
+            print("Invalid email ! Domain extension(TLD) seems incorrect.")
+            continue
+
+        #passed all conditions
+        return email
+
+
+# ==================================================================================
+
 
 
 def input_password(prompt="Enter Password: "):
@@ -150,7 +194,7 @@ def add_student():
     degree=input("Enter the Student degree: ")
     stream=input("Enter Student Stream: ")
     phone=get_valid_phone("Enter Student phone Number: ")
-    email=input("Enter Student Email: ")
+    email=get_valid_email("Enter Your Email: ")
     address=input("Enter Student Address: ")
 
     try:
