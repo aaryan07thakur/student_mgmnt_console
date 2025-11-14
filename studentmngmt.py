@@ -126,6 +126,23 @@ def get_valid_dob(prompt="Enter student Date of Birth (DD-MM-YYY): "):
 
 # ==========================================================================================
 
+#======================Grade Validation(numeric)=================================================
+def get_valid_grade(prompt="Enter Student Grade: "):
+    while True:
+        grade = input(prompt).strip()
+        try:
+            grade_val=float(grade)
+            if grade_val <0 or grade_val > 100:
+                print("Grade must be between 0 and 100.")
+                continue
+            return grade_val
+        except:
+            print("Invalid grade ! Please enter a numeric value.")
+
+
+# ===================================================================
+
+
 def input_password(prompt="Enter Password: "):
     """Custom password input with hidden characters."""
     print(prompt, end="", flush=True)
@@ -203,7 +220,7 @@ def add_student():
         return
     
     name=input("Enter Student Name: ")
-    grade=input("Enter Student Grade: ")
+    grade=get_valid_grade("Enter Student Grade: ")
     gender=input("Enter Student Gender (Male/Female): ").strip().capitalize()
     while gender not in ["Male","Female"]:
         print("Invalid input! Please enter 'Male' or 'Female' ")
