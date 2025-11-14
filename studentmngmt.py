@@ -106,6 +106,25 @@ def get_valid_email(prompt="Enter Your Email: "):
 # ==================================================================================
 
 
+#DoB validation==========================================================================
+def get_valid_dob(prompt="Enter student Date of Birth (DD-MM-YYY): "):
+    while True:
+        dob=input(prompt).strip()
+        parts=dob.split("-")
+        if len(parts)!=3:
+            print("Invalid format! use DD-MM-YYY.")
+            continue
+        day, month, year=parts
+        if not (day.isdigit() and month.isdigit() and year.isdigit()):
+            print("Invalid DOB! Day, Month, year must be numbers.")
+            continue
+        day,month,year=int(day),int(month),int(year)
+        if not (1<=day <=31 and 1 <=month <=12 and year > 1900):
+            print("Invalid DOB! Please enter realistic date. ")
+            continue
+        return dob
+
+# ==========================================================================================
 
 def input_password(prompt="Enter Password: "):
     """Custom password input with hidden characters."""
@@ -190,7 +209,7 @@ def add_student():
         print("Invalid input! Please enter 'Male' or 'Female' ")
         gender=input("Enter Student Gender (Male/Female): ").strip().capitalize()
 
-    dob=input("Enter Student Date of Birth (DD-MM-YYYY): ")
+    dob=get_valid_dob("Enter Student Date of Birth (DD-MM-YYYY): ")
     degree=input("Enter the Student degree: ")
     stream=input("Enter Student Stream: ")
     phone=get_valid_phone("Enter Student phone Number: ")
@@ -202,7 +221,7 @@ def add_student():
                        INSERT INTO students 
                        (student_id,name,grade,gender,dob,degree,stream,phone,email,address)
                        VALUES(?,?,?,?,?,?,?,?,?,?) ''',
-                       (student_id,name,grade,gender,dob,degree,stream,int(phone),email,address))
+                       (int(student_id),name,grade,gender,dob,degree,stream,int(phone),email,address))
         conn.commit()
         print("\n Student added successfully!")
 
