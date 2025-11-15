@@ -61,6 +61,7 @@ def get_valid_phone(prompt="Enter Phone number: "):
         return phone
 # =======================================================================
 
+
 #Email validation function========================================
 def get_valid_email(prompt="Enter Your Email: "):
     while True:
@@ -251,9 +252,40 @@ def add_student():
 
 #=============================================================================
 
-
+#View students========================================================
 def view_student():
-    pass
+    conn=sqlite3.connect("students.db")
+    cursor=conn.cursor()
+    print("\n=========================== View Students =======================================================================")
+    cursor.execute("select * from students")
+    students=cursor.fetchall()
+#checking data in students table
+    if not students:
+        print("\n No students found in the database! \n")
+        conn.close()
+        return
+    
+    #data laie display garna ko lagie
+    print("\n" + "="*140)
+    print(f"{'ID':<5} {'Stu_ID':<10} {'Name':<20} {'Grade':<7} {'Gender':<10} {'DOB':<12} {'Degree':<15} {'Stream':<25} {'Phone':<12} {'Email':<20} {'Adress':<120} ")
+
+    print("="*160)
+
+#print each students
+    for student in students:
+         print(f"{student[0]:<5} {student[1]:<10} {student[2]:<20} {student[3]:<7} {student[4]:<10} {student[5]:<12} {student[6]:<15} {student[7]:<25} {student[8]:<12} {student[9]:<20} {student[10]:<120} ")
+
+    print("-"*160)
+
+    conn.close()
+
+
+
+
+
+
+
+
 def Update_student():
     pass
 def Delete_student():
