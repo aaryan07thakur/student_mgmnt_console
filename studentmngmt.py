@@ -284,10 +284,144 @@ def view_student():
 
 
 
+# def Update_student():
+#     conn=sqlite3.connect("students.db")
+#     cursor=conn.cursor()
+#     student_id=input("\nEnter Student ID to update")
 
+
+#     print("\n=========================== Update Students =======================================================================")
+#     cursor.execute("select * from students where student_id=?",(student_id))
+#     student=cursor.fetchone
+
+#     if not student:
+#         print("\nStudent not found !\n")
+#         conn.close()
+#         return
+    
+#     print("\n==== Update Students Details====")
+#     print("Leave blank to keep current value")
+
+#     #check student id already exists
+#     cursor.execute("SELECT * FROM students WHERE student_id=?",(student_id,))
+#     if cursor.fetchone():
+#         print("\nError:Student ID already exists!")
+#         conn.close()
+#         return
+    
+#     name=input(f"Enter New Name [{student[2]}]: ") or student[2]
+#     grade=get_valid_grade("Enter New Grade [{student[3]}]: ") or student[3]
+#     gender=input("Enter New Gender (Male/Female): ").strip().capitalize()
+#     while gender not in ["Male","Female"]:
+#         print("Invalid input! Please enter 'Male' or 'Female' ")
+#         gender=input("Enter Student Gender (Male/Female): ").strip().capitalize()
+
+#     dob=get_valid_dob("Enter Student Date of Birth (DD-MM-YYYY): ")
+#     degree=input("Enter the Student degree: ")
+#     stream=input("Enter Student Stream: ")
+#     phone=get_valid_phone("Enter Student phone Number: ")
+#     email=get_valid_email("Enter Your Email: ")
+#     address=input("Enter Student Address: ")
+    
+#     conn.close()
 
 def Update_student():
-    pass
+    conn = sqlite3.connect("students.db")
+    cursor = conn.cursor()
+
+    print("\n================ Update Student ============================")
+
+    student_id = input("Enter Student ID to update: ").strip()
+
+    # Fetch existing record
+    cursor.execute("SELECT * FROM students WHERE student_id=?", (student_id,))
+    row = cursor.fetchone()
+
+    if not row:
+        print("\nNo student found with this Student ID!\n")
+        conn.close()
+        return
+
+    # Unpack row
+    db_id, old_sid, old_name, old_grade, old_gender, old_dob, old_degree, old_stream, old_phone, old_email, old_address = row
+
+    print("\nLeave field EMPTY to keep old value.\n")
+
+    print(f"Current Name: {old_name}")
+    name = input("Enter new Name: ").strip()
+    if name == "":
+        name = old_name
+
+    print(f"Current Grade: {old_grade}")
+    grade = input("Enter new Grade: ").strip()
+    if grade == "":
+        grade = old_grade
+
+    print(f"Current Gender: {old_gender}")
+    gender = input("Enter new Gender (Male/Female): ").strip().capitalize()
+    if gender == "":
+        gender = old_gender
+    else:
+        while gender not in ["Male", "Female"]:
+            print("Invalid! Please enter Male or Female.")
+            gender = input("Enter Gender again: ").strip().capitalize()
+
+    print(f"Current Date of Birth: {old_dob}")
+    dob = input("Enter new DOB (DD-MM-YYYY): ").strip()
+    if dob == "":
+        dob = old_dob
+
+    print(f"Current Degree: {old_degree}")
+    degree = input("Enter new Degree: ").strip()
+    if degree == "":
+        degree = old_degree
+
+    print(f"Current Stream: {old_stream}")
+    stream = input("Enter new Stream: ").strip()
+    if stream == "":
+        stream = old_stream
+
+    print(f"Current Phone: {old_phone}")
+    new_phone = input("Enter new Phone (10 digits): ").strip()
+    if new_phone == "":
+        phone = old_phone
+    else:
+        phone = get_valid_phone(prompt="Enter valid 10-digit phone: ")
+
+    print(f"Current Email: {old_email}")
+    new_email = input("Enter new Email: ").strip()
+    if new_email == "":
+        email = old_email
+    else:
+        email = get_valid_email(prompt="Enter valid Email: ")
+
+    print(f"Current Address: {old_address}")
+    address = input("Enter new Address: ").strip()
+    if address == "":
+        address = old_address
+
+    # Update query
+    cursor.execute("""
+        UPDATE students
+        SET name=?, grade=?, gender=?, dob=?, degree=?, stream=?, phone=?, email=?, address=?
+        WHERE student_id=?
+    """, (name, grade, gender, dob, degree, stream, phone, email, address, student_id))
+
+    conn.commit()
+    conn.close()
+
+    print("\n Student updated successfully!\n")
+
+
+
+
+
+
+
+
+
+
+
 def Delete_student():
     pass
 
