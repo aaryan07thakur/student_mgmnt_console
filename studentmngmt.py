@@ -413,17 +413,84 @@ def Update_student():
     print("\n Student updated successfully!\n")
 
 
+def search_student_by_id():
+    conn=sqlite3.connect("students.db")
+    cursor=conn.cursor()
 
+    print("\n====================== Search Student By ID =============================")
+    student_id=input("Enter Student ID to search: ").strip()
 
+    cursor.execute("SELEct * FROM students WHERE student_id=?",(student_id, ))
+    student=cursor.fetchone()
 
+    if not student:
+        print("\n No student found with this Student ID!\n")
+        conn.close()
+        return
+    
+    print("\n=============================== Stundent Details============================")
+    print(f"Database ID  : {student[0]}")
+    print(f"Student ID   : {student[1]}")
+    print(f"Name         : {student[2]}")
+    print(f"Grade        : {student[3]}")
+    print(f"Gender      :  {student[4]}")
+    print(f"DOB      : {student[5]}")
+    print(f"Degree     : {student[6]}")
+    print(f"Stream  : {student[7]} ")
+    print(f"Phone :   {student[8]}")
+    print(f"Email    : {student[9]}")
+    print(f"Address   :  {student[10]}")
+    print("===================================================================\n")
 
-
-
+    conn.close()
 
 
 
 def Delete_student():
-    pass
+    conn = sqlite3.connect("students.db")
+    cursor = conn.cursor()
+
+    print("\n================ Delete Student ============================")
+
+    student_id = input("Enter Student ID to delete: ").strip()
+
+    # Check if student exists
+    cursor.execute("SELECT * from students WHERE student_id=?", (student_id,))
+    student = cursor.fetchone()
+
+    if not student:
+        print("\n❌ No student found with this Student ID!\n")
+        conn.close()
+        return
+    
+    # Display student details before deleting
+    print("\nStudent Found:")
+    print(f"ID: {student[0]}")
+    print(f"Student_ID: {student[1]}")
+    print(f"Name: {student[2]}")
+    print(f"Grade: {student[3]}")
+    print(f"Gender: {student[4]}")
+    print(f"DOB: {student[5]}")
+    print(f"Degree: {student[6]}")
+    print(f"Stream: {student[7]}")
+    print(f"Phone: {student[8]}")
+    print(f"Email: {student[9]}")
+    print(f"Address: {student[10]}")
+
+    confirm = input("\nAre you sure you want to delete this student? (yes/no): ").strip().lower()
+
+    if confirm != "yes":
+        print("\n❗ Deletion cancelled.\n")
+        conn.close()
+        return
+
+    # Delete the student
+    cursor.execute("DELETE FROM students WHERE student_id=?", (student_id,))
+    conn.commit()
+    conn.close()
+
+    print("\n✅ Student deleted successfully!\n")
+
 
 
 def show_menu():
@@ -435,7 +502,8 @@ def show_menu():
         print("2. View Student")
         print("3. Update Student")
         print("4. Delete Student")
-        print("5. Logout Student")
+        print("5. Search Student by ID")
+        print("6. Logout Student")
         print("="*100)
 
         choice=input("Enter your choise (1-5): ")
@@ -448,6 +516,8 @@ def show_menu():
         elif choice=="4":
             Delete_student()
         elif choice=="5":
+            search_student_by_id()
+        elif choice=="6":
             print("\n Logging out....\n")
             break
         else:
