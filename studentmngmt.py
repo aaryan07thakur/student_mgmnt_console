@@ -459,7 +459,7 @@ def Delete_student():
     student = cursor.fetchone()
 
     if not student:
-        print("\n❌ No student found with this Student ID!\n")
+        print("\nNo student found with this Student ID!\n")
         conn.close()
         return
     
@@ -480,7 +480,7 @@ def Delete_student():
     confirm = input("\nAre you sure you want to delete this student? (yes/no): ").strip().lower()
 
     if confirm != "yes":
-        print("\n❗ Deletion cancelled.\n")
+        print("\n  Deletion cancelled.\n")
         conn.close()
         return
 
@@ -489,7 +489,7 @@ def Delete_student():
     conn.commit()
     conn.close()
 
-    print("\n✅ Student deleted successfully!\n")
+    print("\n Student deleted successfully!\n")
 
 
 
